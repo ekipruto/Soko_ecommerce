@@ -23,6 +23,7 @@ def create_app():
     def page_not_found(error):
         return render_template('404.html')
 
+    #keeping track of the logged in users
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
