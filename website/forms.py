@@ -12,4 +12,10 @@ class SignUpForm(FlaskForm):
 class LoginForm(FlaskForm):
     email=EmailField('Email', validators=[DataRequired()])
     password = PasswordField('Enter Your Password', validators=[DataRequired()])
-    submit = SubmitField('Login In')
+    submit = SubmitField('Login')
+
+class PasswordChangeForm(FlaskForm):
+    current_password = PasswordField('Current Password', validators=[DataRequired(), length(min=6)])
+    new_password = PasswordField('New Password', validators=[DataRequired(), length(min=6)])
+    confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), length(min=6)])
+    change_password = SubmitField('Change Password')
