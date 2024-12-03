@@ -44,7 +44,7 @@ def sign_up():
 def login():
     form=LoginForm()
     #getting user inputs
-    if form.validate_on_submit():
+    if form.validate_on_submit():  #checking to see if the values submitted by the customer are valid
         email=form.email.data
         password=form.password.data
 
@@ -74,8 +74,9 @@ def log_out():
 
 @auth.route('/profile/<int:customer_id>')
 @login_required
-def profile(customer_id):
-    #print('Customer Id is:', customer_id)
+def profile(customer_id):   #customer_id is the integer that will pick or load the specific customer 
+                            #whose password to change
+    print('Customer Id is:', customer_id)
     #return ('Customer Id is:', customer_id)
     #Queerying the database to get the instatnce of the customer
     customer=Customer.query.get(customer_id)
@@ -83,10 +84,11 @@ def profile(customer_id):
 
 @auth.route('/change-password/<int:customer_id>', methods=['GET', 'POST'])
 @login_required
-def change_password(customer_id):
+def change_password(customer_id):   #customer_id is the integer that will pick or load the specific customer 
+                                    #whose password to change
     form = PasswordChangeForm()
     customer = Customer.query.get(customer_id)
-    if form.validate_on_submit():
+    if form.validate_on_submit():   #checking to see if the values submitted by the customer are valid
         current_password = form.current_password.data
         new_password = form.new_password.data
         confirm_new_password = form.confirm_new_password.data

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, EmailField, FloatField, StringField, PasswordField,BooleanField,SubmitField
 from wtforms.validators import length,DataRequired,NumberRange
+from flask_wtf.file import FileField, FileRequired
 
 class SignUpForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
@@ -19,3 +20,22 @@ class PasswordChangeForm(FlaskForm):
     new_password = PasswordField('New Password', validators=[DataRequired(), length(min=6)])
     confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), length(min=6)])
     change_password = SubmitField('Change Password')
+
+class ShopItemsForm(FlaskForm):
+    product_name = StringField('Name of Product', validators=[DataRequired()])
+    current_price = FloatField('Current Price', validators=[DataRequired()])
+    previous_price = FloatField('Previous Price', validators=[DataRequired()])
+    in_stock = IntegerField('In Stock', validators=[DataRequired(), NumberRange(min=0)])
+    product_picture = FileField('Product Picture', validators=[DataRequired()])
+    flash_sale = BooleanField('Flash Sale')
+
+    add_product = SubmitField('Add Product')
+    update_product = SubmitField('Update')
+
+
+# class OrderForm(FlaskForm):
+#     order_status = SelectField('Order Status', choices=[('Pending', 'Pending'), ('Accepted', 'Accepted'),
+#                                                         ('Out for delivery', 'Out for delivery'),
+#                                                         ('Delivered', 'Delivered'), ('Canceled', 'Canceled')])
+
+#     update = SubmitField('Update Status')
