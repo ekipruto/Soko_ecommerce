@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, EmailField, FloatField, StringField, PasswordField,BooleanField,SubmitField
+from wtforms import IntegerField, EmailField, FloatField, StringField, PasswordField,BooleanField,SubmitField,SelectField
 from wtforms.validators import length,DataRequired,NumberRange
 from flask_wtf.file import FileField, FileRequired
 
@@ -33,9 +33,9 @@ class ShopItemsForm(FlaskForm):
     update_product = SubmitField('Update')
 
 
-# class OrderForm(FlaskForm):
-#     order_status = SelectField('Order Status', choices=[('Pending', 'Pending'), ('Accepted', 'Accepted'),
-#                                                         ('Out for delivery', 'Out for delivery'),
-#                                                         ('Delivered', 'Delivered'), ('Canceled', 'Canceled')])
+class OrderForm(FlaskForm):
+     order_status = SelectField('Order Status', choices=[('Pending', 'Pending'), ('Accepted', 'Accepted'),
+                                                         ('Out for delivery', 'Out for delivery'),
+                                                         ('Delivered', 'Delivered'), ('Canceled', 'Canceled')])
 
-#     update = SubmitField('Update Status')
+     update = SubmitField('Update Status')

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, flash, send_from_directory, redirect
 from flask_login import login_required, current_user
-from .forms import ShopItemsForm
+from .forms import ShopItemsForm,OrderForm
 from werkzeug.utils import secure_filename
-from .models import Product
+from .models import Product, Order,Customer
 from . import db
 
 admin=Blueprint('admin', __name__)
@@ -132,4 +132,51 @@ def shop_items():
     if current_user.id==1:
         items=Product.query.order_by(Product.date_added).all()   #items is the list of all the items in the shop
         return render_template('shop-items',items=items)
-    render_template('404.html')
+    return render_template('404.html')
+
+@admin.route('/view-orders')
+@login_required
+def view_orders():
+    if current_user.id == 1:
+        orders = Order.query.all()
+        return render_template('view_orders.html', orders=orders)
+    return render_template('404.html')
+
+@admin.route('/order_update/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def order_update(order_id):
+    if current_user.id==1:
+        form=OrderForm
+        order=Order.query.get(order_id)
+
+        if form.validate_on_submit():
+            status=form.order_status.data
+            order.status=status
+
+            try:
+                db.session.commit()
+                flash(f'order {order_id} updated successfully')
+                return redirect('view-orders')
+            except Exception as e:
+                print(e)
+                flash(f'order {order_id} not updated')
+                return redirect('view-orders')
+
+        return render_template('order_update.html', form=form)
+    return render_template('404.html')
+
+@admin.route('/customers')
+@login_required
+def display_customers():
+    if current_user.id == 1:
+        customers = Customer.query.all()
+        return render_template('customers.html', customers=customers)
+    return render_template('404.html')
+
+@admin.route('/admin')
+@login_required
+def admin_page():
+    if current_user.id==1:
+        return render_template ('admin.html')
+    return render_template('404.html')
+
